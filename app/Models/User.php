@@ -45,4 +45,21 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    /**
+     * Relasi: User memiliki banyak Sertifikat
+     */
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
 }
