@@ -33,6 +33,8 @@ class DashboardController extends Controller
             return $enrollment->course->duration_hours ?? 0; 
         });
 
+        $showOnboardingAlert = $user->must_change_password || !$user->profile_completed;
+
         // 6. Kirim Data ke View (Tampilan)
         // Kita mengirim variabel $user dan array $stats ke file 'resources/views/dashboard.blade.php'
         return view('dashboard', [
@@ -42,7 +44,8 @@ class DashboardController extends Controller
                 'completed' => $completedCourses,
                 'certificates' => $certificates,
                 'totalHours' => $totalHours,
-            ]
+            ],
+            'showOnboardingAlert' => $showOnboardingAlert,
         ]);
     }
 }
