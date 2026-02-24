@@ -18,11 +18,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'nim',
         'name',
         'email',
         'password',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -44,5 +44,35 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    /**
+     * Relasi: User memiliki banyak Sertifikat
+     */
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
+
+    // Cek apakah user sudah menyelesaikan lesson tertentu
+    public function hasCompletedLesson($lessonId)
+    {
+        return $this->lessonCompletions()->where('lesson_id', $lessonId)->exists();
+    }
+
+    // Relasi ke tabel lesson_completions (Pastikan Model LessonCompletion ada)
+    public function lessonCompletions()
+    {
+        return $this->hasMany(LessonCompletion::class);
     }
 }
